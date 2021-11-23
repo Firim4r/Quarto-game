@@ -124,6 +124,8 @@ void display_board(board game){
 }
 
 
+void display_left_pieces(board game);
+
 
 int main(int args, char **argv){
 /**
