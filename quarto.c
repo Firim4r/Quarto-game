@@ -22,11 +22,17 @@ int main(int args, char **argv){
 
 
 void print_void(){
+/**
+ * @brief Prints multiple spaces as wide as a board's cell width.
+ * */
 	printf("     ");
 }
 
 
 void print_line(){
+/**
+ * @brief Prints a board horizontal line.
+ * */
 		printf("   _________________________\n");
 }
 	
@@ -65,6 +71,10 @@ void print_type_piece(piece p){
 
 
 void print_top_piece(piece p){
+/**
+ * @brief Prints the top type of a piece
+ * @param piece A piece object.
+ * */
 	switch(piece_top(p)){
 		case HOLLOW:
 			printf("  •  ");
@@ -77,6 +87,10 @@ void print_top_piece(piece p){
 
 
 void print_tall_piece(piece p){
+/**
+ * @brief Prints the upper part of a piece
+ * @param piece A piece object.
+ * */
 	if(piece_size(p) == TALL){
 		print_type_piece(p);
 	}
@@ -87,6 +101,10 @@ void print_tall_piece(piece p){
 
 
 void print_bottom_piece(piece p){
+/**
+ * @brief Prints the bottom of a piece
+ * @param piece A piece object.
+ * */
 		print_type_piece(p);
 }
 
@@ -243,6 +261,11 @@ void display_board(board game,int *number){
 
 
 piece choice(board game,int num_piece){
+/**
+ * @brief Takes an int between 1 and 16 as parameters ans returns the corresponding piece
+ * @param game A game object.
+ * @param num_piece An int between 1 and 16 included.
+ * */
 	piece chosen_piece;
 	switch (num_piece){
 		case 1 :
@@ -300,28 +323,38 @@ piece choice(board game,int num_piece){
 
 
 void turn(board game){
+/**
+ * @brief Starts a player's turn.
+ * @param game A game object.
+ * */
 	int chosen_line,chosen_column,num_piece;
 	piece chosen_piece;
 	printf("\nwhat piece do you want to place on the board? (Give its number)\n");
-		scanf("%d",&num_piece);
-		while(num_piece > 16 || num_piece < 1){
-			printf("This number is not valid, please input another one.\n");
-			scanf("%d",&num_piece);
+	scanf("%d",&num_piece);
+	while(num_piece < 1 || num_piece > 16){
+		printf("This number is not valid, please input another one.\n");
+		while(scanf("%d", &num_piece) == 0) {
+			getchar();
 		}
-		printf("\nWhat line do you want to place it?\n");
-		scanf("%d",&chosen_line);
-		while(chosen_line > 3 || chosen_line < 0){
-			printf("This number is not valid, please input another one.\n");
-			scanf("%d",&chosen_line);
+	}
+	printf("\nWhat line do you want to place it?\n");
+	scanf("%d",&chosen_line);
+	while(chosen_line > 4 || chosen_line < 1){
+		printf("This number is not valid, please input another one.\n");
+		while(scanf("%d", &chosen_line) == 0) {
+			getchar();
 		}
-		printf("\nWhat column do you want to place it?\n");
-		scanf("%d",&chosen_column);
-		while(chosen_column > 3 || chosen_column < 0){ 
-			printf("This number is not valid, please input another one.\n");
-			scanf("%d",&chosen_column);
+	}
+	printf("\nWhat column do you want to place it?\n");
+	scanf("%d",&chosen_column);
+	while(chosen_column > 4 || chosen_column < 1){ 
+		printf("This number is not valid, please input another one.\n");
+		while(scanf("%d", &chosen_column) == 0) {
+			getchar();
 		}
-		chosen_piece = choice(game,num_piece);
-		place_piece(game, chosen_line, chosen_column, chosen_piece);
+	}
+	chosen_piece = choice(game,num_piece);
+	place_piece(game, chosen_line-1, chosen_column-1, chosen_piece);
 }
 
 
