@@ -22,6 +22,11 @@ int main(int args, char **argv){
 }*/
 
 
+void print_void(){
+	printf("     ");
+}
+	
+
 void print_type_piece(piece p){
 /**
  * @brief Prints a symbol representing a
@@ -61,7 +66,7 @@ void print_top_piece(piece p){
 			printf("  •  ");
 			break;
 		case SOLID:
-			printf("      ");
+			print_void();
 			break;
 	}
 }
@@ -72,7 +77,7 @@ void print_tall_piece(piece p){
 		print_type_piece(p);
 	}
 	else{
-		printf("     ");
+		print_void();
 	}
 }
 
@@ -84,11 +89,6 @@ void print_bottom_piece(piece p){
 
 void print_line(){
 		printf("_________________________\n");
-}
-
-
-void print_void(){
-	printf("     ");
 }
 
 
@@ -175,9 +175,12 @@ void list_left_pieces(board game, piece left[16], int* number){
 					piece p = get_piece_from_characteristics(size, shape, color, top);
 					if(!is_present_on_board(game, p)){
 						left[index] = p;
-						index++;
 						*number += 1;
 					}
+					else{
+						left[index] = NULL;
+					}
+					index++;
 				}
 			}
 		}
@@ -195,39 +198,44 @@ void display_left_pieces(board game, int* number){
 	printf("\nPIeces left : \n");
 //_________________________________________________________________________________________________________
 
-	for(int j = 0; j < *number; j++){																					           // Displays the Hollow dot "•"
-		if(piece_top(left[j]) == HOLLOW){						   															   // ift he piece top is HOLLOW
-			printf("  •  ");
+	for(int j = 0; j < 16; j++){																					           // Displays the Hollow dot "•"
+		if(left[j] != NULL){						   															   // ift he piece top is HOLLOW
+			print_top_piece(left[j]);
 		}
 		else{
-			printf("     ");
+			print_void();
 		}
 	}
 	printf("\n");
 
 //_________________________________________________________________________________________________________
 
-	for(int j = 0; j < *number; j++){																			           		// Displays the top part of the piece
-		if(piece_size(left[j]) == TALL){
-			print_type_piece(left[j]);
+	for(int j = 0; j < 16; j++){																			           		// Displays the top part of the piece
+		if(left[j] != NULL){
+			print_tall_piece(left[j]);
 		}
 		else{
-			printf("     ");
+			print_void();
 		}
 	}
 	printf("\n");
 
 //_________________________________________________________________________________________________________
 
-	for(int j = 0; j < *number; j++){																				          	// Displays the botoom part of the piece
-		print_type_piece(left[j]);
+	for(int j = 0; j < 16; j++){
+		if(left[j] != NULL){																				          	// Displays the botoom part of the piece
+			print_bottom_piece(left[j]);
+		}
+		else{
+			print_void();
+		}
 	}
 	printf("\n");
 
 //_________________________________________________________________________________________________________
 
-	for(int j = 0; j < *number; j++){																				          	// Displays the number at the bottom of the pieces
-		printf(" %2d  ", j+1);
+	for(int j = 0; j < 16; j++){																				          	// Displays the number at the bottom of the pieces
+		printf("  %02d ", j+1);
 	}
 	printf("\n");
 }
@@ -241,12 +249,12 @@ int main(int args, char **argv){
 	printf("\033[2J");
 	int number;
 	board game = new_game();
-	display_board(game);
-	display_left_pieces(game, &number);
 	enum size i =1;
 	piece p = get_piece_from_characteristics(i, CIRCULAR, BLUE, HOLLOW);
-	place_piece(game, 2, 0, p);
-	display_board(game);
+	piece p1 = get_piece_from_characteristics(TALL, SQUARE, BLUE, HOLLOW);
+	place_piece(game, 2, 1, p);
+	place_piece(game, 2, 0, p1);
+	display_board(game);	
 	display_left_pieces(game, &number);
 	return 0;
 }
