@@ -5,7 +5,6 @@
   /*
 int main(int args, char **argv){
 	@brief old main made by teachers
-
 	board game = new_game();
 	printf("Un plateau est créé.\n");
         piece p = get_piece_from_characteristics(TALL, CIRCULAR, BLUE, HOLLOW);
@@ -240,21 +239,94 @@ void display_left_pieces(board game, int* number){
 	printf("\n");
 }
 
-
+piece choice (board game,int num_piece){
+	piece chosen_piece;
+	switch (num_piece){
+		case 1 :
+			chosen_piece = get_piece_from_characteristics(0,0,0,0);
+			break;
+		case 2 :
+			chosen_piece = get_piece_from_characteristics(0,0,0,1);
+			break;
+		case 3 :
+			chosen_piece = get_piece_from_characteristics(0,1,0,0);
+			break;
+		case 4 :
+			chosen_piece = get_piece_from_characteristics(0,1,0,1);
+			break;
+		case 5 :
+			chosen_piece = get_piece_from_characteristics(1,0,0,0);
+			break;
+		case 6 :
+			chosen_piece = get_piece_from_characteristics(1,0,0,1);
+			break;
+		case 7 :
+			chosen_piece = get_piece_from_characteristics(1,1,0,0);
+			break;
+		case 8 :
+			chosen_piece = get_piece_from_characteristics(1,1,0,1);
+			break;
+		case 9 :
+			chosen_piece = get_piece_from_characteristics(0,0,1,0);
+			break;
+		case 10 :
+			chosen_piece = get_piece_from_characteristics(0,0,1,1);
+			break;
+		case 11 :
+			chosen_piece = get_piece_from_characteristics(0,1,1,0);
+			break;
+		case 12 :
+			chosen_piece = get_piece_from_characteristics(0,1,1,1);
+			break;
+		case 13 :
+			chosen_piece = get_piece_from_characteristics(1,0,1,0);
+			break;
+		case 14 :
+			chosen_piece = get_piece_from_characteristics(1,0,1,1);
+			break;
+		case 15 :
+			chosen_piece = get_piece_from_characteristics(1,1,1,0);
+			break;
+		case 16 :
+			chosen_piece = get_piece_from_characteristics(1,1,1,1);
+			break;
+		
+	}
+	return chosen_piece;
+}
 
 int main(int args, char **argv){
 /**
  * @brief Starts a new Quarto game
  * */
 	printf("\033[2J");
-	int number;
 	board game = new_game();
-	enum size i =1;
-	piece p = get_piece_from_characteristics(i, CIRCULAR, BLUE, HOLLOW);
-	piece p1 = get_piece_from_characteristics(TALL, SQUARE, BLUE, HOLLOW);
-	place_piece(game, 2, 1, p);
-	place_piece(game, 2, 0, p1);
-	display_board(game);	
-	display_left_pieces(game, &number);
+	int chosen_piece,chosen_line,chosen_column,num_piece;
+	int number = 1;
+	piece p;
+	while(has_winner(game) == 0 && number != 0){
+		display_board(game);
+		display_left_pieces(game,&number);
+		printf("\nwhat piece do you want to place on the board? (Give its number)\n");
+		scanf("%d",&num_piece);
+		if(num_piece > 16 || num_piece < 1){ 
+			printf("\nThe number you whant is not existed\n");
+			printf("\nwhat piece do you want to place on the board? (Give its number)\n");
+		}
+		printf("\nWhat line do you want to place it?\n");
+		scanf("%d",&chosen_line);
+		if(chosen_line > 3 || chosen_line < 0){ 
+			printf("\nThe number you whant is not existed\n");
+			printf("\nWhat line do you want to place it?\n");
+		}
+		printf("\nWhat column do you want to place it?\n");
+		scanf("%d",&chosen_column);
+		if(chosen_column > 3 || chosen_column < 0){ 
+			printf("\nThe number you whant is not existed\n");
+			printf("\nWhat column do you want to place\n");
+		}
+		p = choice(game,num_piece);
+		place_piece(game, chosen_line, chosen_column, p);
+	}
 	return 0;
 }
