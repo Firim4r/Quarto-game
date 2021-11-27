@@ -87,7 +87,7 @@ void print_bottom_piece(piece p){
 
 
 void print_line(){
-		printf("_________________________\n");
+		printf("   _________________________\n");
 }
 
 
@@ -102,7 +102,7 @@ void print_row(board game, int row){
 	print_line();
 
 //_________________________________________________________________________________________________________
-
+	printf("   ");
 	for(int j = 0; j < 4; j++){																					           // Displays the Hollow dot "•"
 		printf("|");																										           // ift he piece top is HOLLOW
 		if(is_occupied(game, row, j)){
@@ -115,7 +115,7 @@ void print_row(board game, int row){
 	printf("|\n");
 	
 //_________________________________________________________________________________________________________
-
+	printf(" %d ", row+1);
 	for(int j = 0; j < 4; j++){																			           		// Displays the top part of the piece
 		printf("|");																										        // if the piece is TALL
 		if(is_occupied(game, row, j)){
@@ -128,7 +128,7 @@ void print_row(board game, int row){
 	printf("|\n");
 	
 //_________________________________________________________________________________________________________
-
+	printf("   ");
 	for(int j = 0; j < 4; j++){																				          	// Displays the botoom part of the piece
 		printf("|");
 		if(is_occupied(game, row, j)){
@@ -148,7 +148,8 @@ void display_board(board game){
  * 			 the entire board in the terminal.
  * @param game A 4*4 board to display
  * */
-	//printf("\033[2J");
+	printf("\033[2J");
+	printf("      1     2     3     4   \n");
 	for(int i = 0; i < 4	; i++){
 		print_row(game, i);
 	}
@@ -239,6 +240,7 @@ void display_left_pieces(board game, int* number){
 	printf("\n");
 }
 
+
 piece choice (board game,int num_piece){
 	piece chosen_piece;
 	switch (num_piece){
@@ -295,15 +297,17 @@ piece choice (board game,int num_piece){
 	return chosen_piece;
 }
 
+
+
 int main(int args, char **argv){
 /**
  * @brief Starts a new Quarto game
  * */
 	printf("\033[2J");
 	board game = new_game();
-	int chosen_piece,chosen_line,chosen_column,num_piece;
+	int chosen_line,chosen_column,num_piece;
 	int number = 1;
-	piece p;
+	piece chosen_piece;
 	while(has_winner(game) == 0 && number != 0){
 		display_board(game);
 		display_left_pieces(game,&number);
@@ -325,8 +329,8 @@ int main(int args, char **argv){
 			printf("\nThe number you whant is not existed\n");
 			printf("\nWhat column do you want to place\n");
 		}
-		p = choice(game,num_piece);
-		place_piece(game, chosen_line, chosen_column, p);
+		chosen_piece = choice(game,num_piece);
+		place_piece(game, chosen_line, chosen_column, chosen_piece);
 	}
 	return 0;
 }
