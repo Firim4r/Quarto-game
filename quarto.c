@@ -304,21 +304,21 @@ void turn(board game){
 	piece chosen_piece;
 	printf("\nwhat piece do you want to place on the board? (Give its number)\n");
 		scanf("%d",&num_piece);
-		if(num_piece > 16 || num_piece < 1){ 
-			printf("\nThe number you whant is not existed\n");
-			printf("\n what piece do you want to place on the board? (Give its number)\n");
+		while(num_piece > 16 || num_piece < 1){
+			printf("This number is not valid, please input another one.\n");
+			scanf("%d",&num_piece);
 		}
 		printf("\nWhat line do you want to place it?\n");
 		scanf("%d",&chosen_line);
-		if(chosen_line > 3 || chosen_line < 0){ 
-			printf("\nThe number you whant is not existed\n");
-			printf("\nWhat line do you want to place it?\n");
+		while(chosen_line > 3 || chosen_line < 0){
+			printf("This number is not valid, please input another one.\n");
+			scanf("%d",&chosen_line);
 		}
 		printf("\nWhat column do you want to place it?\n");
 		scanf("%d",&chosen_column);
-		if(chosen_column > 3 || chosen_column < 0){ 
-			printf("\nThe number you whant is not existed\n");
-			printf("\nWhat column do you want to place\n");
+		while(chosen_column > 3 || chosen_column < 0){ 
+			printf("This number is not valid, please input another one.\n");
+			scanf("%d",&chosen_column);
 		}
 		chosen_piece = choice(game,num_piece);
 		place_piece(game, chosen_line, chosen_column, chosen_piece);
