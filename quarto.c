@@ -328,32 +328,10 @@ int main(int args, char **argv){
  * */
 	printf("\033[2J");
 	board game = new_game();
-	int chosen_line,chosen_column,num_piece;
 	int number = 1;
-	piece chosen_piece;
 	while(has_winner(game) == 0 && number != 0){
 		display_board(game);
-		display_left_pieces(game,&number);
-		printf("\nwhat piece do you want to place on the board? (Give its number)\n");
-		scanf("%d",&num_piece);
-		if(num_piece > 16 || num_piece < 1){ 
-			printf("\nThe number you whant is not existed\n");
-			printf("\nwhat piece do you want to place on the board? (Give its number)\n");
-		}
-		printf("\nWhat line do you want to place it?\n");
-		scanf("%d",&chosen_line);
-		if(chosen_line > 3 || chosen_line < 0){ 
-			printf("\nThe number you whant is not existed\n");
-			printf("\nWhat line do you want to place it?\n");
-		}
-		printf("\nWhat column do you want to place it?\n");
-		scanf("%d",&chosen_column);
-		if(chosen_column > 3 || chosen_column < 0){ 
-			printf("\nThe number you whant is not existed\n");
-			printf("\nWhat column do you want to place\n");
-		}
-		chosen_piece = choice(game,num_piece);
-		place_piece(game, chosen_line, chosen_column, chosen_piece);
+		turn(game);
 	}
 	return 0;
 }
