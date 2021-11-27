@@ -297,7 +297,30 @@ piece choice (board game,int num_piece){
 	return chosen_piece;
 }
 
-
+void turn(board game){
+	int chosen_line,chosen_column,num_piece;
+	piece chosen_piece;
+	printf("\nwhat piece do you want to place on the board? (Give its number)\n");
+		scanf("%d",&num_piece);
+		if(num_piece > 16 || num_piece < 1){ 
+			printf("\nThe number you whant is not existed\n");
+			printf("\nwhat piece do you want to place on the board? (Give its number)\n");
+		}
+		printf("\nWhat line do you want to place it?\n");
+		scanf("%d",&chosen_line);
+		if(chosen_line > 3 || chosen_line < 0){ 
+			printf("\nThe number you whant is not existed\n");
+			printf("\nWhat line do you want to place it?\n");
+		}
+		printf("\nWhat column do you want to place it?\n");
+		scanf("%d",&chosen_column);
+		if(chosen_column > 3 || chosen_column < 0){ 
+			printf("\nThe number you whant is not existed\n");
+			printf("\nWhat column do you want to place\n");
+		}
+		chosen_piece = choice(game,num_piece);
+		place_piece(game, chosen_line, chosen_column, chosen_piece);
+}
 
 int main(int args, char **argv){
 /**
