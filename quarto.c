@@ -2,25 +2,6 @@
 #include "bin/board.h"
 
 
-  /*
-int main(int args, char **argv){
-	@brief old main made by teachers
-	board game = new_game();
-	printf("Un plateau est créé.\n");
-        piece p = get_piece_from_characteristics(TALL, CIRCULAR, BLUE, HOLLOW);
-	enum return_code res = place_piece(game, 2, 0, p);
-	if(res == SUCCESS){
-		printf("○ □ ○ □  ● ■ ● ■  ○ □ ○ □   ● ■ ● ■.\n");
-	}
-	else {
-		printf("Un problème a eu lieu lors du placement\n");
-	}
-	destroy_game(game);
-	printf("suppression du plateau et sortie\n");
-	return 0;
-}*/
-
-
 void print_void(){
 /**
  * @brief Prints multiple spaces as wide as a board's cell width.
