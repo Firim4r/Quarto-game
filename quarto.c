@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include "bin/board.h"
 
+//Players can still take the same nickname
+
 
 void print_void(){
 /**
@@ -298,39 +300,49 @@ piece choice(board game,int num_piece){
 }
 
 
-void turn(board game, int turns, char nicks[2][30]){
+int turn(board game, int turns, char nicks[2][30]){
 /**
  * @brief Starts and ends a player's turn.
  * @param game A game object.
  * */
 	int chosen_line,chosen_column,num_piece;
 	piece chosen_piece;
-	printf("\n%s, what piece do you want to place on the board? (Give its number)\n", nicks[turns%2]);
+	//_________________________________________________________________________________________________________________________________________
+	printf("\n%s, what piece do you want to give %s? (Give its number)\n", nicks[(turns+1)%2], nicks[turns%2]);			//Other player gives piece to place
 	scanf("%d",&num_piece);
-	while(num_piece < 1 || num_piece > 16){																								//Asks for the piece number
+	while(num_piece < 1 || num_piece > 16){																										//Asks for the piece number
 		printf("This number is not valid, please input another one.\n");
 		while(scanf("%d", &num_piece) == 0) {
 			getchar();
 		}
 	}
-	printf("\nWhat line do you want to place it?\n");
-	scanf("%d",&chosen_line);																															//Asks for the line the piece will be placed
+	//___________________________________________________________________________________________________________________________________________
+	printf("\n%s, what line do you want to place it?\n", nicks[turns%2]);
+	scanf("%d",&chosen_line);																																	//Asks for the line the piece will be placed
 	while(chosen_line > 4 || chosen_line < 1){
 		printf("This number is not valid, please input another one.\n");
 		while(scanf("%d", &chosen_line) == 0) {
 			getchar();
 		}
 	}
-	printf("\nWhat column do you want to place it?\n");
-	scanf("%d",&chosen_column);																													//Asks for the column the piece will be placed
+	//____________________________________________________________________________________________________________________________________________
+	printf("\n%s, what column do you want to place it?\n", nicks[turns%2]);
+	scanf("%d",&chosen_column);																															//Asks for the column the piece will be placed
 	while(chosen_column > 4 || chosen_column < 1){ 
 		printf("This number is not valid, please input another one.\n");
 		while(scanf("%d", &chosen_column) == 0) {
 			getchar();
 		}
 	}
-	chosen_piece = choice(game,num_piece);
-	place_piece(game, chosen_line-1, chosen_column-1, chosen_piece);														 //Places the piece
+	//_____________________________________________________________________________________________________________________________________________
+	chosen_piece = choice(game,num_piece);																										 //Get the piece from the number the user input
+	if(!(is_occupied(game, chosen_line-1, chosen_column-1)) && !(is_present_on_board(game, chosen_piece))){
+		place_piece(game, chosen_line-1, chosen_column-1, chosen_piece);															 //Places the piece
+		return 1;
+	}
+	else{
+		return 0;
+	}
 }
 
 
@@ -342,6 +354,43 @@ void ask_names(char nicks[2][30]){
 	for(int i = 0; i < 2; i++){
 		printf("Player %d,  please input your nickname.\n", i+1);
 		scanf("%s", nicks[i]);
+		printf("\n");
+	}
+}
+
+
+void play_game(board game){
+/**
+ * @brief Plays the actual game.
+ * @param game A 4*4 board object.
+ * */
+	printf("\033[2J");
+	int turns = -1, number = 1;																		//turns tarts at -1 because we increment the value before the actual turn, so we can start the first turn with turns = 0
+	char nicks[2][30];
+	ask_names(nicks);
+	int check =1;
+	
+	while(has_winner(game) == 0 && number != 0){									//while no winner, or still pieces left, the game itself
+		
+		display_board(game, &number);
+		if(check == 1){
+			turns++;
+			
+		}
+		else{
+			printf("\nThe piece could not be placed, try another one or another location!");
+		}
+		check = turn(game, turns, nicks);
+	}
+	
+	display_board(game, &number);
+	
+	if(has_winner(game)){																				//if someone won
+		printf("%s, you won!\n", nicks[turns%2]);
+	}
+	
+	else{																											//else, the game ended on a tie
+		printf("That's a tie, no more pieces left.\n");
 	}
 }
 
@@ -349,24 +398,11 @@ void ask_names(char nicks[2][30]){
 
 int main(int args, char **argv){
 /**
- * @brief Starts and ends new a Quarto game.
+ * @brief Starts and ends new a Quarto game, and destroys the board at the end.
  * */
 	printf("\033[2J");
 	board game = new_game();
-	int turns = -1, number = 1;																		//starts at -1 because we increment the value before the actual turn, so we can start the first turn with turns = 0
-	char nicks[2][30];
-	ask_names(nicks);
-	while(has_winner(game) == 0 && number != 0){									//while no winner, or still pieces left
-		turns++;
-		display_board(game, &number);
-		turn(game, turns, nicks);
-	}
-	display_board(game, &number);
-	if(has_winner(game)){
-		printf("%s, you won!\n", nicks[turns%2]);
-	}
-	else{
-		printf("That's a tie, no more pieces left.\n");
-	}
+	play_game(game);
+	destroy_game(game);
 	return 0;
 }
