@@ -1,7 +1,7 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 #include "bin/board.h"
-
-//Players can still take the same nickname
 
 
 void print_void(){
@@ -346,15 +346,37 @@ int turn(board game, int turns, char nicks[2][30]){
 }
 
 
+int are_identical(char nick1[30], char nick2[30]){
+	int index = 0;
+	while(nick1[index] != '\0'){
+		if(nick1[index] != nick2[index]){
+			return 0;
+		}
+		index++;
+	}
+	if(nick2[index] == '\0'){
+		return 1;
+	}
+	return 0;
+}
+		
+
 void ask_names(char nicks[2][30]){
 /**
- * @brief Asks the players for their nicknames.
+ * @brief Asks the players for their nicknames and prevents dupes.
  * @param nicks An empty array tostore the names.
  * */
 	for(int i = 0; i < 2; i++){
 		printf("Player %d,  please input your nickname.\n", i+1);
 		scanf("%s", nicks[i]);
 		printf("\n");
+	}
+
+	while(are_identical(nicks[0], nicks[1])){																			//prevents both players to get the same nickname
+		printf("You cannot chose the same nickname as player 1.\n");
+		while(scanf("%s", nicks[0]) ==0 && are_identical(nicks[0], nicks[1])){		
+			getchar();
+		}
 	}
 }
 
@@ -365,7 +387,8 @@ void play_game(board game){
  * @param game A 4*4 board object.
  * */
 	printf("\033[2J");
-	int turns = -1, number = 1;																		//turns tarts at -1 because we increment the value before the actual turn, so we can start the first turn with turns = 0
+	int turns = rand()%2-1;															//turns gets -1 because we increment the value before the actual turn, so we can start the first turn with turns = 0 or turns = 1
+	int number = 1;																		//So the first person to play is random
 	char nicks[2][30];
 	ask_names(nicks);
 	int check =1;
@@ -401,6 +424,7 @@ int main(int args, char **argv){
  * @brief Starts and ends new a Quarto game, and destroys the board at the end.
  * */
 	printf("\033[2J");
+	srand(time(NULL));
 	board game = new_game();
 	play_game(game);
 	destroy_game(game);
