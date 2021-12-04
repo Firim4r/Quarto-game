@@ -3,6 +3,8 @@
 #include <time.h>
 #include "bin/board.h"
 
+//code by Cyprien DE LA POËZE D'HARAMBURE and Hugo MARTIN
+
 
 void print_void(){
 /**
@@ -347,6 +349,11 @@ int turn(board game, int turns, char nicks[2][30]){
 
 
 int are_identical(char nick1[30], char nick2[30]){
+/**
+ * @brief Checks if two strings are identical, returns boolean.
+ * @param nick1 A string
+ * @param nick2 A string
+ * */
 	int index = 0;
 	while(nick1[index] != '\0'){
 		if(nick1[index] != nick2[index]){
