@@ -94,6 +94,7 @@ board new_game(){
 	default_piece.p_size = TALL;
 	default_piece.p_color = RED;
 	default_piece.p_top = HOLLOW;
+	default_piece.author = NO_PLAYER;
 	for(int i = 0; i < DIMENSION; i++){
 		for(int j = 0; j < DIMENSION; j++){
 			new_board.array[i][j] = default_piece;
