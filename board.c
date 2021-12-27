@@ -264,18 +264,23 @@ enum return_code place_piece(board game, int line, int column, piece a_piece);
  **/
  
  
-piece get_piece_from_characteristics(enum size a_size, enum shape a_shape, enum color a_color,  enum top a_top);
+piece get_piece_from_characteristics(enum size a_size, enum shape a_shape, enum color a_color,  enum top a_top){
 /**
  * @brief create the piece corresponding to the given characteristics.
- *
- * @param a_size size of the new piece
- * @param a_shape shape of the new piece
- * @param a_color color of the new piece
- * @param a_top top of the new piece
+ * @param a_size size of the new piece.
+ * @param a_shape shape of the new piece.
+ * @param a_color color of the new piece.
+ * @param a_top top of the new piece.
  * @return a new piece created.
  */
-
-
+	piece return_piece;
+	return_piece.p_shape = a_shape;
+	return_piece.p_color = a_color;
+	return_piece.p_size = a_size;
+	return_piece.p_top = a_top;
+	return_piece.author = PLAYER1;
+	return return_piece;
+}
 /**@}*/
 
 #endif /*_BOARD_H_*/
