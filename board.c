@@ -94,7 +94,6 @@ board new_game(){
 	default_piece.p_size = TALL;
 	default_piece.p_color = RED;
 	default_piece.p_top = HOLLOW;
-	default_piece.author = NO_PLAYER;
 	for(int i = 0; i < DIMENSION; i++){
 		for(int j = 0; j < DIMENSION; j++){
 			new_board.array[i][j] = default_piece;
@@ -148,7 +147,7 @@ enum return_code{
 }; 
  
  
-bool is_occupied(board game, int line, int column);
+bool is_occupied(board game, int line, int column){
 /**
  * @brief states whether a square of the game is occupied.
  *
@@ -160,9 +159,20 @@ bool is_occupied(board game, int line, int column);
  * @param column the column number (from 0 to DIMENSION - 1)
  * @return true if the square is occupied or if the coordinates do not match a square on the board.
  **/
- 
+	piece default_piece;
+	default_piece.p_shape = SQUARE;
+	default_piece.p_size = TALL;
+	default_piece.p_color = RED;
+	default_piece.p_top = HOLLOW;
+	if(game.array[line][column] = default_piece){
+		return 1;
+	}
+	else{
+		return 0;
+	}
+}
 
-piece get_piece(board game, int line, int column);
+piece get_piece(board game, int line, int column){
 /**
  * @brief returns the piece placed on the board at the corresponding coordinates, 
  * NULL if there is no piece there.
@@ -172,6 +182,13 @@ piece get_piece(board game, int line, int column);
  * @param column the column number (from 0 to DIMENSION - 1)
  * @return the piece, NULL if no piece is available.
  */
+	piece return_piece;
+	return_piece.p_shape = game.array[line][column] .p_shape;
+	return_piece.p_color = game.array[line][column] .p_color;
+	return_piece.p_size = game.array[line][column] .p_size;
+	return_piece.p_top = game.array[line][column] .p_top ;
+	return return_piece;
+}
  
  
 enum size piece_size(piece a_piece){
@@ -214,7 +231,6 @@ bool has_winner(board game);
  * @return whether the game contains a line, column or diagonal with four pieces sharing a same characteristic.
  */ 
  
- 
 bool is_present_on_board(board game, piece a_piece){
 /**
  * @brief whether the piece has been placed on the board or not.
@@ -241,13 +257,7 @@ bool is_present_on_board(board game, piece a_piece){
  
  
  
-enum return_code place_piece(board game, int line, int column, piece a_piece);
-/**@}*/
-
-/**@{
- * \name Playing commands
- */
-
+enum return_code place_piece(board game, int line, int column, piece a_piece){
 /**
  * @brief places a piece on the board.
  *
@@ -263,7 +273,12 @@ enum return_code place_piece(board game, int line, int column, piece a_piece);
  * @param a_piece the piece to place on the board
  * @return an enum return_code stating the result of the command.
  **/
- 
+	piece place_piece;
+	game.array[line][column] .p_shape = place_piece.p_shape;
+	game.array[line][column] .p_size = place_piece.p_size;
+	game.array[line][column] .p_top = place_piece.p_top;
+	game.array[line][column] .p_color = place_piece.p_color; 
+}
  
 piece get_piece_from_characteristics(enum size a_size, enum shape a_shape, enum color a_color,  enum top a_top){
 /**
