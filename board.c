@@ -1,5 +1,3 @@
-#ifndef _BOARD_H_
-#define _BOARD_H_
 #include <stdbool.h>
 #include <stdio.h>
 #define DIMENSION 4 
@@ -78,11 +76,16 @@ typedef enum players_t player;
 /**
  * @brief number of players in the game.
  */
-
-/**@{
- * \name Creation/deletion functionalities.
- */
  
+ piece get_default_piece(){
+	piece return_piece;
+	return_piece.p_size = TALL;
+	return_piece.p_shape = SQUARE;
+	return_piece.p_color = RED;
+	return_piece.p_top = HOLLOW;
+	return_piece.author = NO_PLAYER;
+	return return_piece;
+ }
  
 board new_game(){
 /**
@@ -94,6 +97,7 @@ board new_game(){
 	default_piece.p_size = TALL;
 	default_piece.p_color = RED;
 	default_piece.p_top = HOLLOW;
+	default_piece.author = NO_PLAYER;
 	for(int i = 0; i < DIMENSION; i++){
 		for(int j = 0; j < DIMENSION; j++){
 			new_board.array[i][j] = default_piece;
@@ -144,7 +148,7 @@ enum return_code{
 		 POSITION,
 		 /// This piece does not exist or cannot be played;
 		 PIECE,
-}; 
+};
  
  
 bool is_occupied(board game, int line, int column){
@@ -159,16 +163,11 @@ bool is_occupied(board game, int line, int column){
  * @param column the column number (from 0 to DIMENSION - 1)
  * @return true if the square is occupied or if the coordinates do not match a square on the board.
  **/
-	piece default_piece;
-	default_piece.p_shape = SQUARE;
-	default_piece.p_size = TALL;
-	default_piece.p_color = RED;
-	default_piece.p_top = HOLLOW;
-	if(game.array[line][column] = default_piece){
-		return 1;
+	if(game.array[line][column].author == NO_PLAYER){
+		return false;
 	}
 	else{
-		return 0;
+		return true;
 	}
 }
 
@@ -182,12 +181,12 @@ piece get_piece(board game, int line, int column){
  * @param column the column number (from 0 to DIMENSION - 1)
  * @return the piece, NULL if no piece is available.
  */
-	piece return_piece;
-	return_piece.p_shape = game.array[line][column] .p_shape;
-	return_piece.p_color = game.array[line][column] .p_color;
-	return_piece.p_size = game.array[line][column] .p_size;
-	return_piece.p_top = game.array[line][column] .p_top ;
-	return return_piece;
+	/*piece* return_piece = NULL;
+	if(is_occupied(game, line, column) == 1 && line < 3 && line > 0 && column < 3 && column > 0){
+		*return_piece =  game.array[line][column];
+	}
+	return *return_piece;*/
+	return game.array[line][column];
 }
  
  
@@ -223,13 +222,15 @@ enum shape piece_shape(piece a_piece){
 }
  
  
-bool has_winner(board game);
+bool has_winner(board game){
 /**
  * @brief Tells if the game has a winner
  *
  * @param game the game to test.
  * @return whether the game contains a line, column or diagonal with four pieces sharing a same characteristic.
  */ 
+	return false;
+}
  
 bool is_present_on_board(board game, piece a_piece){
 /**
@@ -241,18 +242,18 @@ bool is_present_on_board(board game, piece a_piece){
  * @param a_piece the piece to check.
  * @return whether the piece is present on board
  **/
-	for(int i = 0; i < DIMENSION; i++){
+ 	for(int i = 0; i < DIMENSION; i++){
 		for(int j = 0; j < DIMENSION; j++){
-			if(game.array[i][j].p_shape == a_piece.p_shape && game.array[i][j].p_size == a_piece.p_size){
+			if(game.array[i][j].p_shape == a_piece.p_shape && game.array[i][j].p_size == a_piece.p_size){		//checking if all characteristics match
 				if(game.array[i][j].p_color == a_piece.p_color && game.array[i][j].p_top == a_piece.p_top){
-					if(a_piece.author != NO_PLAYER){
-						return 1;
+					if(game.array[i][j].author != NO_PLAYER){
+						return true;
 					}
 				}
 			}
 		}
 	}
-	return 0;
+	return false;
 }
  
  
@@ -266,19 +267,22 @@ enum return_code place_piece(board game, int line, int column, piece a_piece){
  * - POSITION if the position is occupied or does not belong to the board
  * - PIECE if the piece is not available to play
  * - SUCCESS if the placement was successful.
- *
  * @param game the board to play on
  * @param line the line number (from 0 to DIMENSION - 1)
  * @param column the column number (from 0 to DIMENSION - 1)
  * @param a_piece the piece to place on the board
  * @return an enum return_code stating the result of the command.
  **/
-	piece place_piece;
-	game.array[line][column] .p_shape = place_piece.p_shape;
-	game.array[line][column] .p_size = place_piece.p_size;
-	game.array[line][column] .p_top = place_piece.p_top;
-	game.array[line][column] .p_color = place_piece.p_color; 
+	if(line < 0 || line > 3 || column < 0 || column > 3 || is_occupied(game, line, column)){
+		return POSITION;
+	}
+	if(is_present_on_board(game, a_piece) || a_piece.author == NO_PLAYER){
+		return PIECE;
+	}
+	game.array[line][column] = a_piece;
+	return SUCCESS;
 }
+ 
  
 piece get_piece_from_characteristics(enum size a_size, enum shape a_shape, enum color a_color,  enum top a_top){
 /**
@@ -296,11 +300,4 @@ piece get_piece_from_characteristics(enum size a_size, enum shape a_shape, enum 
 	return_piece.p_top = a_top;
 	return_piece.author = PLAYER1;
 	return return_piece;
-}
-/**@}*/
-
-#endif /*_BOARD_H_*/
-
-int main(){
-	return 0;
 }
