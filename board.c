@@ -200,30 +200,139 @@ bool has_winner(board game) {
      * @param game the game to test.
      * @return whether the game contains a line, column or diagonal with four pieces sharing a same characteristic.
      */
-	for(int i = 1; i < DIMENSION - 1; i++){
-		for(int j = 1; j < DIMENSION - 1; j++){
-			if(game -> array[0][0] -> p_shape == game -> array[i][j] -> p_shape && game -> array[0][0] -> p_size == game -> array[i][j] -> p_size && game -> array[0][0] -> p_color == game -> array[i][j] -> p_color && game -> array[0][0] -> p_top == game -> array[i][j] -> p_top){
-				if(game -> array[i][j] -> author != NO_PLAYER){
+    int cmpt = 0;
+	for(int i = 0; i < DIMENSION; i++){																																//chek if a line win
+		for(int j = 1; j < DIMENSION; j++){
+			if(game -> array[i][0] -> p_shape == game -> array[i][j] -> p_shape){
+				if(game -> array[i][j] -> author != NO_PLAYER && game -> array[i][0] -> author != NO_PLAYER){
+					cmpt++;
+					if(cmpt == 3){
+						return true;
+					}
+				}
+			}
+			if(game -> array[i][0] -> p_size == game -> array[i][j] -> p_size){
+				if(game -> array[i][j] -> author != NO_PLAYER && game -> array[i][0] -> author != NO_PLAYER){
+					cmpt++;
+					if(cmpt == 3){
+						return true;
+					}
+				}
+			}
+			if(game -> array[i][0] -> p_top== game -> array[i][j] -> p_top){
+				if(game -> array[i][j] -> author != NO_PLAYER && game -> array[i][0] -> author != NO_PLAYER){
+					cmpt++;
+					if(cmpt == 3){
+						return true;
+					}
+				}
+			}
+			if(game -> array[i][0] -> p_color == game -> array[i][j] -> p_color){
+				if(game -> array[i][j] -> author != NO_PLAYER && game -> array[i][0] -> author != NO_PLAYER){
+					cmpt++;
+					if(cmpt == 3){
+						return true;
+					}
+				}
+			}
+			if(game -> array[i][0] -> p_shape == game -> array[j][i] -> p_shape){															//chek if a column win
+				if(game -> array[j][i] -> author != NO_PLAYER && game -> array[i][0] -> author != NO_PLAYER){
+					cmpt++;
+					if(cmpt == 3){
+						return true;
+					}
+				}
+			}
+			if(game -> array[i][0] -> p_size == game -> array[j][i] -> p_size){
+				if(game -> array[j][i] -> author != NO_PLAYER && game -> array[i][0] -> author != NO_PLAYER){
+					cmpt++;
+					if(cmpt == 3){
+						return true;
+					}
+				}
+			}
+			if(game -> array[i][0] -> p_top== game -> array[j][i] -> p_top){
+				if(game -> array[j][i] -> author != NO_PLAYER && game -> array[i][0] -> author != NO_PLAYER){
+					cmpt++;
+					if(cmpt == 3){
+						return true;
+					}
+				}
+			}
+			if(game -> array[i][0] -> p_color == game -> array[j][i] -> p_color){
+				if(game -> array[j][i] -> author != NO_PLAYER && game -> array[i][0] -> author != NO_PLAYER){
+					cmpt++;
+					if(cmpt == 3){
+						return true;
+					}
+				}
+			}
+			
+		}
+		if(game -> array[i][0] -> p_shape == game -> array[i][i] -> p_shape){													//chek if a diagonal from [0,0] win
+			if(game -> array[i][i] -> author != NO_PLAYER && game -> array[i][0] -> author != NO_PLAYER){
+				cmpt++;
+				if(cmpt == 3){
 					return true;
 				}
 			}
 		}
-	}
-	for(int i = 1; i < DIMENSION - 1; i++){
-		if(game -> array[0][0] -> p_shape == game -> array[i][i] -> p_shape && game -> array[0][0] -> p_size == game -> array[i][i] -> p_size && game -> array[0][0] -> p_color == game -> array[i][i] -> p_color && game -> array[0][0] -> p_top == game -> array[i][i] -> p_top){
-			if(game -> array[i][i] -> author != NO_PLAYER){
-				return true;
+		if(game -> array[i][0] -> p_size == game -> array[i][i] -> p_size){
+			if(game -> array[i][i] -> author != NO_PLAYER && game -> array[i][0] -> author != NO_PLAYER){
+				cmpt++;
+				if(cmpt == 3){
+					return true;
+				}
 			}
 		}
-	}
-	for(int i = 4; i < 1; i--){
-		int j = 1;
-		if(game -> array[4][1] -> p_shape == game -> array[j][i] -> p_shape && game -> array[4][1] -> p_size == game -> array[j][i] -> p_size && game -> array[4][1] -> p_color == game -> array[j][i] -> p_color && game -> array[4][1] -> p_top == game -> array[j][i] -> p_top){
-			if(game -> array[j][i] -> author != NO_PLAYER){
-				return true;
+		if(game -> array[i][0] -> p_top== game -> array[i][i] -> p_top){
+			if(game -> array[i][i] -> author != NO_PLAYER && game -> array[i][0] -> author != NO_PLAYER){
+				cmpt++;
+				if(cmpt == 3){
+					return true;
+				}
 			}
 		}
-		j++;
+		if(game -> array[i][0] -> p_color == game -> array[i][i] -> p_color){
+			if(game -> array[i][i] -> author != NO_PLAYER && game -> array[i][0] -> author != NO_PLAYER){
+				cmpt++;
+				if(cmpt == 3){
+					return true;
+				}
+			}
+		}
+		if(game -> array[3][0] -> p_shape == game -> array[i][3-i] -> p_shape){													//chek if a diagonal from [3,0] win
+			if(game -> array[i][3-i] -> author != NO_PLAYER && game -> array[3][0] -> author != NO_PLAYER){
+				cmpt++;
+				if(cmpt == 3){
+					return true;
+				}
+			}
+		}
+		if(game -> array[3][0] -> p_size == game -> array[i][3-i] -> p_size){
+			if(game -> array[i][3-i] -> author != NO_PLAYER && game -> array[3][0] -> author != NO_PLAYER){
+				cmpt++;
+				if(cmpt == 3){
+					return true;
+				}
+			}
+		}
+		if(game -> array[3][0] -> p_top== game -> array[i][3-i] -> p_top){
+			if(game -> array[i][3-i] -> author != NO_PLAYER && game -> array[3][0] -> author != NO_PLAYER){
+				cmpt++;
+				if(cmpt == 3){
+					return true;
+				}
+			}
+		}
+		if(game -> array[3][0] -> p_color == game -> array[i][3-i]-> p_color){
+			if(game -> array[i][3-i]-> author != NO_PLAYER && game -> array[3][0] -> author != NO_PLAYER){
+				cmpt++;
+				if(cmpt == 3){
+					return true;
+				}
+			}
+		}
 	}
     return false;
 }
