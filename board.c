@@ -1,4 +1,5 @@
 #include <stdbool.h>
+#include <stdlib.h>
 #define DIMENSION 4
 #define NB_PLAYERS 2
 
@@ -199,6 +200,31 @@ bool has_winner(board game) {
      * @param game the game to test.
      * @return whether the game contains a line, column or diagonal with four pieces sharing a same characteristic.
      */
+	for(int i = 1; i < DIMENSION - 1; i++){
+		for(int j = 1; j < DIMENSION - 1; j++){
+			if(game -> array[0][0] -> p_shape == game -> array[i][j] -> p_shape && game -> array[0][0] -> p_size == game -> array[i][j] -> p_size && game -> array[0][0] -> p_color == game -> array[i][j] -> p_color && game -> array[0][0] -> p_top == game -> array[i][j] -> p_top){
+				if(game -> array[i][j] -> author != NO_PLAYER){
+					return true;
+				}
+			}
+		}
+	}
+	for(int i = 1; i < DIMENSION - 1; i++){
+		if(game -> array[0][0] -> p_shape == game -> array[i][i] -> p_shape && game -> array[0][0] -> p_size == game -> array[i][i] -> p_size && game -> array[0][0] -> p_color == game -> array[i][i] -> p_color && game -> array[0][0] -> p_top == game -> array[i][i] -> p_top){
+			if(game -> array[i][i] -> author != NO_PLAYER){
+				return true;
+			}
+		}
+	}
+	for(int i = 4; i < 1; i--){
+		int j = 1;
+		if(game -> array[4][1] -> p_shape == game -> array[j][i] -> p_shape && game -> array[4][1] -> p_size == game -> array[j][i] -> p_size && game -> array[4][1] -> p_color == game -> array[j][i] -> p_color && game -> array[4][1] -> p_top == game -> array[j][i] -> p_top){
+			if(game -> array[j][i] -> author != NO_PLAYER){
+				return true;
+			}
+		}
+		j++;
+	}
     return false;
 }
 
