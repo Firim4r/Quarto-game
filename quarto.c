@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include "bin/board.h"
+#include "board.c"
 
 //code by Cyprien DE LA POËZE D'HARAMBURE and Hugo MARTIN
 
