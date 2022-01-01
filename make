@@ -1,2 +1,2 @@
-gcc -Wall quarto.c bin/board.o -o game > bin/stderr
+gcc -Wall quarto.c -o game > bin/stderr
 cat bin/stderr
