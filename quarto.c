@@ -423,3 +423,17 @@ void play_game(board game){
 		printf("That's a tie, no more pieces left.\n");
 	}
 }
+
+
+
+int main(int args, char **argv){
+/**
+ * @brief Starts and ends new a Quarto game, and destroys the board at the end.
+ * */
+	printf("\033[2J");
+	srand(time(NULL));
+	board game = new_game();
+	play_game(game);
+	destroy_game(game);
+	return 0;
+}
