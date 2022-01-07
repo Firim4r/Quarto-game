@@ -101,11 +101,22 @@ void destroy_game(board game) {
      * @brief Delete the game and frees all required memory.
      * @param game the game to destroy.
      */
-    /*for (int i = 0; i < DIMENSION; i++) {
+     int ctp = 0;
+     for (int i = 0; i < DIMENSION; i++) {
+        for (int j = 0; j < DIMENSION; j++) {
+            if(game->array[i][j]->author == NO_PLAYER){
+				ctp++;
+			}
+            if(ctp > 0){
+				game->array[i][j] = NULL;
+			}
+        }
+    }
+    for (int i = 0; i < DIMENSION; i++) {
         for (int j = 0; j < DIMENSION; j++) {
             free(game -> array[i][j]);
         }
-    }*/
+    }
     free(game);
 }
 
@@ -194,6 +205,12 @@ enum shape piece_shape(piece a_piece) {
 }
 
 bool has_common(piece piece1, piece piece3, piece piece2, piece piece4){
+	/**
+     * @brief Tells if four pieces share a commun characteristic
+     *
+     * @param 4 pieces
+     * @return true or flase depending on if the four pieces share a common characteristic.
+     */
 	int return_val = false;
 	if(piece1->p_size == piece2->p_size && piece2->p_size == piece3->p_size && piece3->p_size == piece4->p_size){												//check size
 		if(piece1->author != NO_PLAYER && piece2->author != NO_PLAYER && piece3->author != NO_PLAYER && piece4->author != NO_PLAYER){
