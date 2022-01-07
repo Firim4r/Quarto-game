@@ -101,11 +101,11 @@ void destroy_game(board game) {
      * @brief Delete the game and frees all required memory.
      * @param game the game to destroy.
      */
-    for (int i = 0; i < DIMENSION; i++) {
+    /*for (int i = 0; i < DIMENSION; i++) {
         for (int j = 0; j < DIMENSION; j++) {
             free(game -> array[i][j]);
         }
-    }
+    }*/
     free(game);
 }
 
@@ -193,6 +193,31 @@ enum shape piece_shape(piece a_piece) {
     return SQUARE;
 }
 
+bool has_common(piece piece1, piece piece3, piece piece2, piece piece4){
+	int return_val = false;
+	if(piece1->p_size == piece2->p_size && piece2->p_size == piece3->p_size && piece3->p_size == piece4->p_size){												//check size
+		if(piece1->author != NO_PLAYER && piece2->author != NO_PLAYER && piece3->author != NO_PLAYER && piece4->author != NO_PLAYER){
+			return_val = true;
+		}
+	}
+	if(piece1->p_color == piece2->p_color && piece2->p_color == piece3->p_color && piece3->p_color == piece4->p_color){										//check color
+		if(piece1->author != NO_PLAYER && piece2->author != NO_PLAYER && piece3->author != NO_PLAYER && piece4->author != NO_PLAYER){
+			return_val = true;
+		}
+	}
+	if(piece1->p_shape == piece2->p_shape && piece2->p_shape == piece3->p_shape && piece3->p_shape == piece4->p_shape){							//check shape
+		if(piece1->author != NO_PLAYER && piece2->author != NO_PLAYER && piece3->author != NO_PLAYER && piece4->author != NO_PLAYER){
+			return_val = true;
+		}
+	}
+	if(piece1->p_top == piece2->p_top && piece2->p_top == piece3->p_top && piece3->p_top == piece4->p_top){														//check top
+		if(piece1->author != NO_PLAYER && piece2->author != NO_PLAYER && piece3->author != NO_PLAYER && piece4->author != NO_PLAYER){
+			return_val = true;
+		}
+	}
+	return return_val;
+}
+
 bool has_winner(board game) {
     /**
      * @brief Tells if the game has a winner
@@ -200,141 +225,24 @@ bool has_winner(board game) {
      * @param game the game to test.
      * @return whether the game contains a line, column or diagonal with four pieces sharing a same characteristic.
      */
-    int cmpt = 0;
-	for(int i = 0; i < DIMENSION; i++){																																//chek if a line win
-		for(int j = 1; j < DIMENSION; j++){
-			if(game -> array[i][0] -> p_shape == game -> array[i][j] -> p_shape){
-				if(game -> array[i][j] -> author != NO_PLAYER && game -> array[i][0] -> author != NO_PLAYER){
-					cmpt++;
-					if(cmpt == 3){
-						return true;
-					}
-				}
-			}
-			if(game -> array[i][0] -> p_size == game -> array[i][j] -> p_size){
-				if(game -> array[i][j] -> author != NO_PLAYER && game -> array[i][0] -> author != NO_PLAYER){
-					cmpt++;
-					if(cmpt == 3){
-						return true;
-					}
-				}
-			}
-			if(game -> array[i][0] -> p_top== game -> array[i][j] -> p_top){
-				if(game -> array[i][j] -> author != NO_PLAYER && game -> array[i][0] -> author != NO_PLAYER){
-					cmpt++;
-					if(cmpt == 3){
-						return true;
-					}
-				}
-			}
-			if(game -> array[i][0] -> p_color == game -> array[i][j] -> p_color){
-				if(game -> array[i][j] -> author != NO_PLAYER && game -> array[i][0] -> author != NO_PLAYER){
-					cmpt++;
-					if(cmpt == 3){
-						return true;
-					}
-				}
-			}
-			if(game -> array[i][0] -> p_shape == game -> array[j][i] -> p_shape){															//chek if a column win
-				if(game -> array[j][i] -> author != NO_PLAYER && game -> array[i][0] -> author != NO_PLAYER){
-					cmpt++;
-					if(cmpt == 3){
-						return true;
-					}
-				}
-			}
-			if(game -> array[i][0] -> p_size == game -> array[j][i] -> p_size){
-				if(game -> array[j][i] -> author != NO_PLAYER && game -> array[i][0] -> author != NO_PLAYER){
-					cmpt++;
-					if(cmpt == 3){
-						return true;
-					}
-				}
-			}
-			if(game -> array[i][0] -> p_top== game -> array[j][i] -> p_top){
-				if(game -> array[j][i] -> author != NO_PLAYER && game -> array[i][0] -> author != NO_PLAYER){
-					cmpt++;
-					if(cmpt == 3){
-						return true;
-					}
-				}
-			}
-			if(game -> array[i][0] -> p_color == game -> array[j][i] -> p_color){
-				if(game -> array[j][i] -> author != NO_PLAYER && game -> array[i][0] -> author != NO_PLAYER){
-					cmpt++;
-					if(cmpt == 3){
-						return true;
-					}
-				}
-			}
-			
+    int return_val = false;
+	for(int i = 0; i < DIMENSION; i++){																																						//check lines and columns first
+		if(has_common(game->array[i][0], game->array[i][1], game->array[i][2], game->array[i][3])){												//lines
+			return_val = true;
 		}
-		if(game -> array[i][0] -> p_shape == game -> array[i][i] -> p_shape){													//chek if a diagonal from [0,0] win
-			if(game -> array[i][i] -> author != NO_PLAYER && game -> array[i][0] -> author != NO_PLAYER){
-				cmpt++;
-				if(cmpt == 3){
-					return true;
-				}
-			}
-		}
-		if(game -> array[i][0] -> p_size == game -> array[i][i] -> p_size){
-			if(game -> array[i][i] -> author != NO_PLAYER && game -> array[i][0] -> author != NO_PLAYER){
-				cmpt++;
-				if(cmpt == 3){
-					return true;
-				}
-			}
-		}
-		if(game -> array[i][0] -> p_top== game -> array[i][i] -> p_top){
-			if(game -> array[i][i] -> author != NO_PLAYER && game -> array[i][0] -> author != NO_PLAYER){
-				cmpt++;
-				if(cmpt == 3){
-					return true;
-				}
-			}
-		}
-		if(game -> array[i][0] -> p_color == game -> array[i][i] -> p_color){
-			if(game -> array[i][i] -> author != NO_PLAYER && game -> array[i][0] -> author != NO_PLAYER){
-				cmpt++;
-				if(cmpt == 3){
-					return true;
-				}
-			}
-		}
-		if(game -> array[3][0] -> p_shape == game -> array[i][3-i] -> p_shape){													//chek if a diagonal from [3,0] win
-			if(game -> array[i][3-i] -> author != NO_PLAYER && game -> array[3][0] -> author != NO_PLAYER){
-				cmpt++;
-				if(cmpt == 3){
-					return true;
-				}
-			}
-		}
-		if(game -> array[3][0] -> p_size == game -> array[i][3-i] -> p_size){
-			if(game -> array[i][3-i] -> author != NO_PLAYER && game -> array[3][0] -> author != NO_PLAYER){
-				cmpt++;
-				if(cmpt == 3){
-					return true;
-				}
-			}
-		}
-		if(game -> array[3][0] -> p_top== game -> array[i][3-i] -> p_top){
-			if(game -> array[i][3-i] -> author != NO_PLAYER && game -> array[3][0] -> author != NO_PLAYER){
-				cmpt++;
-				if(cmpt == 3){
-					return true;
-				}
-			}
-		}
-		if(game -> array[3][0] -> p_color == game -> array[i][3-i]-> p_color){
-			if(game -> array[i][3-i]-> author != NO_PLAYER && game -> array[3][0] -> author != NO_PLAYER){
-				cmpt++;
-				if(cmpt == 3){
-					return true;
-				}
-			}
+		if(has_common(game->array[0][i], game->array[1][i], game->array[2][i], game->array[3][i])){												//columns
+			return_val = true;
 		}
 	}
-    return false;
+	
+																																																					//now diagonals (out of the first loop)
+	if(has_common(game->array[0][0], game->array[1][1], game->array[2][2], game->array[3][3])){												//(0,0) diagonal
+		return_val = true;
+	}
+	if(has_common(game->array[0][3], game->array[1][2], game->array[2][1], game->array[3][0])){												//(0,3) diagonal
+		return_val = true;
+	}
+	return return_val;
 }
 
 bool is_present_on_board(board game, piece a_piece) {
