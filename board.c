@@ -74,7 +74,7 @@ board new_game() {
     /**
      * @brief Defines a new empty board for starting a game of quarto.
      */
-    board new_game = (board) malloc(sizeof(struct board_t));
+    board new_board = (board) malloc(sizeof(struct board_t));
     piece default_piece = (piece) malloc(sizeof(struct piece_t));
     default_piece -> p_shape = SQUARE;
     default_piece -> p_size = TALL;
@@ -83,10 +83,10 @@ board new_game() {
     default_piece -> author = NO_PLAYER;
     for (int i = 0; i < DIMENSION; i++) {
         for (int j = 0; j < DIMENSION; j++) {
-            new_game -> array[i][j] = default_piece;
+            new_board -> array[i][j] = default_piece;
         }
     }
-    return new_game;
+    return new_board;
 }
 
 board copy_game(board original_game);
@@ -151,7 +151,7 @@ bool is_occupied(board game, int line, int column) {
     }
 }
 
-piece get_piece(board game, int line, int column) {
+piece get_piece(board game, int line, int column){
     /**
      * @brief returns the piece placed on the board at the corresponding coordinates,
      * NULL if there is no piece there.
@@ -161,7 +161,12 @@ piece get_piece(board game, int line, int column) {
      * @param column the column number (from 0 to DIMENSION - 1)
      * @return the piece, NULL if no piece is available.
      */
-    return game -> array[line][column];
+     if(is_occupied(game, line, column)){
+		return game -> array[line][column];
+	}
+	else{
+		return NULL;
+	}
 }
 
 enum size piece_size(piece a_piece) {
@@ -262,6 +267,18 @@ bool has_winner(board game) {
 	return return_val;
 }
 
+bool is_free_space(board game){
+    for (int i = 0; i < DIMENSION; i++) {
+        for (int j = 0; j < DIMENSION; j++) {
+			if(game ->array[i][j]->author == NO_PLAYER){
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+
 bool is_present_on_board(board game, piece a_piece) {
     /**
      * @brief whether the piece has been placed on the board or not.
@@ -272,6 +289,9 @@ bool is_present_on_board(board game, piece a_piece) {
      * @param a_piece the piece to check.
      * @return whether the piece is present on board
      **/
+     if(a_piece == NULL){																																								  //NULL as parameter
+		 return is_free_space(game);
+	 }
     for (int i = 0; i < DIMENSION; i++) {
         for (int j = 0; j < DIMENSION; j++) {
             if (game -> array[i][j] -> p_shape == a_piece -> p_shape && game -> array[i][j] -> p_size == a_piece -> p_size) { //checking if all characteristics match
