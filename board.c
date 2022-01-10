@@ -267,7 +267,13 @@ bool has_winner(board game) {
 	return return_val;
 }
 
-bool is_free_space(board game){
+bool has_free_space(board game){
+	/**
+     * @brief whether the board has one free cell or not.
+     *
+     * @param game the board to check
+     * @return whether the piece is present on board
+     **/
     for (int i = 0; i < DIMENSION; i++) {
         for (int j = 0; j < DIMENSION; j++) {
 			if(game ->array[i][j]->author == NO_PLAYER){
@@ -290,7 +296,7 @@ bool is_present_on_board(board game, piece a_piece) {
      * @return whether the piece is present on board
      **/
      if(a_piece == NULL){																																								  //NULL as parameter
-		 return is_free_space(game);
+		 return has_free_space(game);
 	 }
     for (int i = 0; i < DIMENSION; i++) {
         for (int j = 0; j < DIMENSION; j++) {
