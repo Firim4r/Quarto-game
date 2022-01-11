@@ -89,12 +89,20 @@ board new_game() {
     return new_board;
 }
 
-board copy_game(board original_game);
+board copy_game(board original_game){
 /**
  * @brief Makes a deep copy of the game.
  * @param original_game the game to copy.
  * @return a new copy fully independent of the original game.
  */
+ board copy_board = (board) malloc(sizeof(struct board_t));
+  for (int i = 0; i < DIMENSION; i++) {
+      for (int j = 0; j < DIMENSION; j++) {
+		  copy_board -> array[i][j] = original_game -> array[i][j];
+      }
+  }
+  return copy_board;
+}
 
 void destroy_game(board game) {
     /**
