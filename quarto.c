@@ -30,7 +30,7 @@ void print_type_piece(piece p){
 
 	switch (piece_color(p)){
 		case BLUE :											                                            // If the piece is BLUE (white),
-			switch (piece_shape(p)){					                                        // Get the shape of the piece, then print it
+			switch (piece_shape(p)){					                                        	// Get the shape of the piece, then print it
 				case SQUARE :
 					printf("  □  ");
 					break;
@@ -40,7 +40,7 @@ void print_type_piece(piece p){
 			}
 			break;
 		case RED:												                                            // If the piece is RED (black),
-			switch (piece_shape(p)){					                                        // Get the shape of the piece, then print it
+			switch (piece_shape(p)){					                                        	// Get the shape of the piece, then print it
 				case SQUARE:
 					printf("  ■  ");
 					break;
@@ -128,7 +128,7 @@ void display_left_pieces(board game, int* number){
  * */
 	piece left[17] = {};
 	list_left_pieces(game, left, number);
-	printf("\nPieces left : \n");
+	printf("\nPIeces left : \n");
 //_________________________________________________________________________________________________________
 
 	for(int j = 0; j < 16; j++){																					           // Displays the Hollow dot "•"
@@ -400,7 +400,7 @@ void play_game(board game){
 	ask_names(nicks);
 	int check =1;
 	
-	while(has_winner(game) == 0 && number != 0){									//while no winner, or still pieces left, the game itself
+	while(has_winner(game) == 0 && is_present_on_board(game, NULL) == true){									//while no winner, or still pieces left, the game itself
 		
 		display_board(game, &number);
 		if(check == 1){
