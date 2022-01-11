@@ -3,6 +3,8 @@
 #define DIMENSION 4
 #define NB_PLAYERS 2
 
+//code by Cyprien DE LA POËZE D'HARAMBURE and Hugo MARTIN
+
 enum size {
     /**
      * @brief One of the four characteristic of the pieces.
