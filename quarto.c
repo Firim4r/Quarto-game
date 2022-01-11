@@ -128,7 +128,7 @@ void display_left_pieces(board game, int* number){
  * */
 	piece left[17] = {};
 	list_left_pieces(game, left, number);
-	printf("\nPIeces left : \n");
+	printf("\nPieces left : \n");
 //_________________________________________________________________________________________________________
 
 	for(int j = 0; j < 16; j++){																					           // Displays the Hollow dot "•"
