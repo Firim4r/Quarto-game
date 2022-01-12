@@ -3,8 +3,6 @@
 #define DIMENSION 4
 #define NB_PLAYERS 2
 
-//code by Cyprien DE LA POËZE D'HARAMBURE and Hugo MARTIN
-
 enum size {
     /**
      * @brief One of the four characteristic of the pieces.
@@ -117,7 +115,7 @@ void destroy_game(board game) {
             if(game->array[i][j]->author == NO_PLAYER){
 				ctp++;
 			}
-            if(ctp > 0){
+            if(ctp > 0 && game->array[i][j]->author == NO_PLAYER){
 				game->array[i][j] = NULL;
 			}
         }
