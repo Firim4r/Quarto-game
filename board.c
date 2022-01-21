@@ -89,20 +89,6 @@ board new_game() {
     return new_board;
 }
 
-board copy_game(board original_game){
-/**
- * @brief Makes a deep copy of the game.
- * @param original_game the game to copy.
- * @return a new copy fully independent of the original game.
- */
- board copy_board = (board) malloc(sizeof(struct board_t));
-  for (int i = 0; i < DIMENSION; i++) {
-      for (int j = 0; j < DIMENSION; j++) {
-		  copy_board -> array[i][j] = original_game -> array[i][j];
-      }
-  }
-  return copy_board;
-}
 
 void destroy_game(board game) {
     /**
@@ -224,28 +210,27 @@ bool has_common(piece piece1, piece piece3, piece piece2, piece piece4){
      * @param 4 pieces
      * @return true or flase depending on if the four pieces share a common characteristic.
      */
-	int return_val = false;
 	if(piece1->p_size == piece2->p_size && piece2->p_size == piece3->p_size && piece3->p_size == piece4->p_size){												//check size
 		if(piece1->author != NO_PLAYER && piece2->author != NO_PLAYER && piece3->author != NO_PLAYER && piece4->author != NO_PLAYER){
-			return_val = true;
+			return true;
 		}
 	}
 	if(piece1->p_color == piece2->p_color && piece2->p_color == piece3->p_color && piece3->p_color == piece4->p_color){										//check color
 		if(piece1->author != NO_PLAYER && piece2->author != NO_PLAYER && piece3->author != NO_PLAYER && piece4->author != NO_PLAYER){
-			return_val = true;
+			return true;
 		}
 	}
 	if(piece1->p_shape == piece2->p_shape && piece2->p_shape == piece3->p_shape && piece3->p_shape == piece4->p_shape){							//check shape
 		if(piece1->author != NO_PLAYER && piece2->author != NO_PLAYER && piece3->author != NO_PLAYER && piece4->author != NO_PLAYER){
-			return_val = true;
+			return true;
 		}
 	}
 	if(piece1->p_top == piece2->p_top && piece2->p_top == piece3->p_top && piece3->p_top == piece4->p_top){														//check top
 		if(piece1->author != NO_PLAYER && piece2->author != NO_PLAYER && piece3->author != NO_PLAYER && piece4->author != NO_PLAYER){
-			return_val = true;
+			return true;
 		}
 	}
-	return return_val;
+	return false;
 }
 
 bool has_winner(board game) {
@@ -255,24 +240,23 @@ bool has_winner(board game) {
      * @param game the game to test.
      * @return whether the game contains a line, column or diagonal with four pieces sharing a same characteristic.
      */
-    int return_val = false;
 	for(int i = 0; i < DIMENSION; i++){																																						//check lines and columns first
 		if(has_common(game->array[i][0], game->array[i][1], game->array[i][2], game->array[i][3])){												//lines
-			return_val = true;
+			return true;
 		}
 		if(has_common(game->array[0][i], game->array[1][i], game->array[2][i], game->array[3][i])){												//columns
-			return_val = true;
+			return true;
 		}
 	}
 	
 																																																					//now diagonals (out of the first loop)
 	if(has_common(game->array[0][0], game->array[1][1], game->array[2][2], game->array[3][3])){												//(0,0) diagonal
-		return_val = true;
+		return true;
 	}
 	if(has_common(game->array[0][3], game->array[1][2], game->array[2][1], game->array[3][0])){												//(0,3) diagonal
-		return_val = true;
+		return true;
 	}
-	return return_val;
+	return false;
 }
 
 bool has_free_space(board game){
@@ -336,20 +320,13 @@ enum return_code place_piece(board game, int line, int column, piece a_piece) {
      * @param a_piece the piece to place on the board
      * @return an enum return_code stating the result of the command.
      **/
-    if (line < 0 || line > 3 || column < 0 || column > 3 || is_occupied(game, line, column)) {
+    if (line < 0 || line > DIMENSION-1 || column < 0 || column > DIMENSION-1 || is_occupied(game, line, column)) {
         return POSITION;
     }
     if (a_piece -> author == NO_PLAYER || is_present_on_board(game, a_piece)) {
         return PIECE;
     }
-    piece to_place = (piece) malloc(sizeof(struct piece_t));
-    to_place -> p_size = a_piece -> p_size;
-    to_place -> p_color = a_piece -> p_color;
-    to_place -> p_shape = a_piece -> p_shape;
-    to_place -> p_top = a_piece -> p_top;
-    to_place -> author = PLAYER1;
-    free(a_piece);
-    game -> array[line][column] = to_place;
+    game -> array[line][column] = a_piece;
     return SUCCESS;
 }
 
@@ -370,4 +347,33 @@ piece get_piece_from_characteristics(enum size a_size, enum shape a_shape, enum 
     return_piece -> p_top = a_top;
     return_piece -> author = PLAYER1;
     return return_piece;
+}
+
+
+piece copy_piece(piece a_piece){
+	piece p = (piece) malloc(sizeof(struct piece_t));
+	p -> p_size = a_piece -> p_size;
+	p -> p_color = a_piece -> p_color;
+	p -> p_shape = a_piece -> p_shape;
+	p -> p_top = a_piece -> p_top;
+	p -> author = a_piece -> author;
+	return p;
+}
+
+
+board copy_game(board original_game){
+/**
+ * @brief Makes a deep copy of the game.
+ * @param original_game the game to copy.
+ * @return a new copy fully independent of the original game.
+ */
+	board copy_board = new_game();
+	piece copied_piece;
+	for (int i = 0; i < DIMENSION; i++) {
+		for (int j = 0; j < DIMENSION; j++) {
+			copied_piece = copy_piece(original_game -> array[i][j]);
+			place_piece(copy_board, i, j, copied_piece);
+		}
+	}
+	return copy_board;
 }
