@@ -1,0 +1,2 @@
+gcc -Wall quarto.c -o game
+./game
